@@ -3,8 +3,7 @@
 # @lugath/node
 Wrapper for Lugath public API's.
 
-Please see the **Lugath Help Center** for SDK usage and configuration **documentation.**
-
+Please see the SDK usage and configuration **at this documentation.**
 ## Requirements
 
 Node.js 8 or Higher
