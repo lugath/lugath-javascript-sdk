@@ -9,6 +9,6 @@ fi
 
 npm version --no-git-tag-version "$VERSION"
 
-header_match="    constructor\(apiKey: string, platform = \"lugath-node\", platformVersion = "
-header_ver="    constructor\(apiKey: string, platform = \"lugath-node\", platformVersion = \"${VERSION}\"\) {"
+header_match="    constructor\(apiKey: string, platform = \"lugath-javascript-sdk\", platformVersion = "
+header_ver="    constructor\(apiKey: string, platform = \"lugath-javascript-sdk\", platformVersion = \"${VERSION}\"\) {"
 sed -i -E "/$header_match/s/.*/$header_ver/" src/lugath.ts

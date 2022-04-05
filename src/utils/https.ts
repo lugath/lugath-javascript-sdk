@@ -8,36 +8,23 @@ export class Https implements HttpClient {
 
     private readonly host: string;
     private readonly headers: any;
+    private readonly options: any;
     private tokens: any;
 
-    constructor(host: string, headers?: any) {
+    constructor(options:Options, host: string, headers?: any) {
         this.host = host;
+        this.options = options;
         this.headers = headers;
     }
 
-    dispatch(options: Options, method: string, path: string, data?: any, files?: any): Promise<any> {
-        
-        if(this.tokens){
-            console.log("exist");
-           return this.send(this.tokens, "GET", "/api/languages");
-        } else {
-            console.log("not exist");
-            const authenticate = this.authenticate(options);
-            return authenticate.then((r) => {
-                this.tokens = r;
-                return this.send(this.tokens, "GET", "/api/languages");
-            });
-
-            
-        }
-
-
+    dispatch(method: string, path: string, data?: any, files?: any): Promise<any> {
+        return this.tokens ? this.send(method, path, data, files) : this.authenticate().then((r) => {
+            this.tokens = r;
+            return this.send(method, path, data, files);
+        })
     }
 
-    send(tokens: AccessToken, method: string, path: string, data?: any, files?: any): Promise<any> {
-        
-        console.log('TOKENS', this.tokens);
-        
+    send(method: string, path: string, data?: any, files?: any): Promise<any> {
         const options = {
             host: this.host,
             headers: {
@@ -49,8 +36,6 @@ export class Https implements HttpClient {
             method: method,
             path
         };
-
-        console.log(options);
 
         let formData: FormData;
         if (files) {
@@ -75,7 +60,6 @@ export class Https implements HttpClient {
                 ...formData.getHeaders()
             };
         }
-
         return new Promise((resolve, reject) => {
             const req = request(options, (res) => {
                 let chunks:any = [];
@@ -110,19 +94,17 @@ export class Https implements HttpClient {
         });
     }
 
-    authenticate(options:Options): Promise<any> {
-        console.log("authenticate");
+    authenticate(): Promise<any> {
 
         const updatedOptions = {
             'method': 'POST',
-            'hostname': 'keycloak.lugath.com',
+            'hostname': this.options.AUTH_URL,
             'path': '/auth/realms/translate/protocol/openid-connect/token',
             'headers': {
               'Content-Type': 'application/x-www-form-urlencoded'
             },
             'maxRedirects': 20
         };
-
         
         return new Promise((resolve, reject) => {
            
@@ -137,7 +119,6 @@ export class Https implements HttpClient {
                 res.on("end", function (chunk:any) {
                 const body:any = Buffer.concat(chunks);
                 const json:AccessToken = JSON.parse(body);
-                //console.log("response from auth", json);
                 if(json.error && json.error_description){
                     reject(new LugathAuthException(json.error, json.error_description));
                 }
@@ -145,18 +126,17 @@ export class Https implements HttpClient {
                 });
             
                 res.on("error", function (error:any) {
-                    console.log('error', error);
-                    console.error(error);
+                    return new LugathException(error)
                 });
 
                
             });
   
             const postData = qs.stringify({
-                'scope': 'email',
-                'client_id': options.API_KEY,
-                'client_secret': options.API_SECRET,
-                'grant_type': 'client_credentials'
+                'scope': this.options.AUTH_OPTIONS.SCOPE,
+                'client_id': this.options.AUTH_OPTIONS.CLIENT_ID,
+                'client_secret': this.options.AUTH_OPTIONS.CLIENT_SECRET,
+                'grant_type': this.options.AUTH_OPTIONS.GRANT_TYPE
               });
 
             req.write(postData);

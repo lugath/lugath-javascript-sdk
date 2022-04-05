@@ -7,7 +7,7 @@ module.exports = {
     filename: "index.js",
     path: path.resolve(__dirname, "umd"),
     library: {
-      name: "Lugath",
+      name: "lugath-javascript-sdk",
       type: "umd"
     }
   },

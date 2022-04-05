@@ -30,15 +30,84 @@ export class AccessToken {
     }
 }
 
+export interface AuthOptions {
+    SCOPE:string,
+    CLIENT_ID:string,
+    CLIENT_SECRET: string,
+    GRANT_TYPE:string
+}
+
 export interface Options {
+    API_URL:string,
+    AUTH_URL:string,
+    AUTH_OPTIONS:AuthOptions
+}
+
+export interface IIndexable<T = any> { [key: string]: T }
+
+export interface UserOptions {
     API_KEY: string,
     API_SECRET: string
 }
 
+/*
+
+
+{
+  "from":"en",
+  "to":["fr", "de"],
+  "text":"",
+  "industryName":"",
+  "options":{
+    "glossaryID":"",
+    "useBestMatch":false,
+    "customMTEngineName":"AmazonTranslationEngine",
+    "translationRequestType":"STRING||FILE"
+  }
+}*/
+
+
+export interface TReqOptions {
+    glossaryIDs:String[],
+    useGlossary:Boolean,
+    useBestMatch:Boolean,
+    customMTEngineName: String,
+    translationRequestType:string
+}
+
+export interface TranslateClientReqOptions {
+    from: String,
+    to: String[],
+    text:String,
+    category:String,
+    options:TReqOptions
+}
+export interface MissingTranslateClientReqOptions {
+    type:String,
+    reason:String,
+    message:String
+}
+
+
+export interface TranslateReqOptions {
+    title?: String,
+    description?: String,
+    translationRequestType?: String,
+    useBestMatch:Boolean,
+    customMTEngineName?:String,
+    sourceLanguageCode: String,
+    sourceContent: String,
+    targetLanguageCodeList:String[],
+    industryName:String,
+    tierType?: String,
+    glossaryIdList:String[],
+    useGlossary:Boolean
+}
+
 export interface HttpClient {
-    send: (tokens: AccessToken, method: string, path: string, data?: any, files?: any) => Promise<any>,
-    dispatch: (options: Options, method: string, path: string, data?: any, files?: any) => Promise<any>,
-    authenticate:(options: Options) => Promise<any>
+    send: (method: string, path: string, data?: any, files?: any) => Promise<any>,
+    dispatch: (method: string, path: string, data?: any, files?: any) => Promise<any>,
+    authenticate:() => Promise<any>
 }
 
 export class LugathException extends Error {
