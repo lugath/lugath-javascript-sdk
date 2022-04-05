@@ -69,10 +69,11 @@ export class Fetch implements HttpClient {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
         const urlencoded = new URLSearchParams();
-        urlencoded.append("scope", "email");
-        urlencoded.append("client_id", "61bb0eaa38271b6930b17b28");
-        urlencoded.append("client_secret", "ac42424e-2a64-44fe-82d5-cc4cecc2669f");
-        urlencoded.append("grant_type", "client_credentials");
+        
+        urlencoded.append("scope", this.options.AUTH_OPTIONS.SCOPE);
+        urlencoded.append("client_id", this.options.AUTH_OPTIONS.CLIENT_ID);
+        urlencoded.append("client_secret", this.options.AUTH_OPTIONS.CLIENT_SECRET);
+        urlencoded.append("grant_type", this.options.AUTH_OPTIONS.GRANT_TYPE);
 
         const requestOptions:any = {
             method: 'POST',
@@ -81,7 +82,7 @@ export class Fetch implements HttpClient {
             redirect: 'follow'
         };
 
-        fetch("https://auth.lugath.com/auth/realms/translate/protocol/openid-connect/token", requestOptions)
+        fetch(this.options.AUTH_URL + "/auth/realms/translate/protocol/openid-connect/token", requestOptions)
         .then(response => response.text())
         .then(result => console.log(result))
         .catch(error => console.log('error', error));

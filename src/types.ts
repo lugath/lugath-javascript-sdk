@@ -49,24 +49,6 @@ export interface UserOptions {
     API_KEY: string,
     API_SECRET: string
 }
-
-/*
-
-
-{
-  "from":"en",
-  "to":["fr", "de"],
-  "text":"",
-  "industryName":"",
-  "options":{
-    "glossaryID":"",
-    "useBestMatch":false,
-    "customMTEngineName":"AmazonTranslationEngine",
-    "translationRequestType":"STRING||FILE"
-  }
-}*/
-
-
 export interface TReqOptions {
     glossaryIDs:String[],
     useGlossary:Boolean,
