@@ -51,7 +51,10 @@ export class Lugath {
 
     translate(translateClientReqOptions:TranslateClientReqOptions): Promise<any> {
         if(this.isValidRequestData(translateClientReqOptions)){
-            return this.http.dispatch("POST", "/translation-requests", this.checkTranslationReqIsMissingAttribute(translateClientReqOptions))
+            
+            const res = this.http.dispatch("POST", "/translation-requests", this.checkTranslationReqIsMissingAttribute(translateClientReqOptions))
+            return res.then((r) => this.responseByType("translation-requests", r))
+        
         } else {
             return Promise.resolve({
                 type:"Error",
@@ -59,6 +62,10 @@ export class Lugath {
                 message:"from, to, text and category attributes can not be blank."
             });
         }
+    }
+
+    responseByType(targetEndpoint:string, r:any){
+       return Promise.resolve(r.translationList)
     }
 
     isValidRequestData(translateClientReqOptions:TranslateClientReqOptions){
@@ -71,22 +78,27 @@ export class Lugath {
     }
 
     checkTranslationReqIsMissingAttribute(translateClientReqOptions:TranslateClientReqOptions){
-         return {
+         const mandatoryOptions =  {
             "title": this.options.AUTH_OPTIONS.CLIENT_ID+'req-from_nodejs-sdk',
             "description": "_from:"+translateClientReqOptions.from+"_to:"+translateClientReqOptions.to.join('-'),
-            "translationRequestType": translateClientReqOptions.options.translationRequestType,
-            "useBestMatch":translateClientReqOptions.options.useBestMatch,
-            "customMTEngineName":translateClientReqOptions.options.useBestMatch ? "" : translateClientReqOptions.options.customMTEngineName,
             "sourceLanguageCode": translateClientReqOptions.from,
             "sourceContent": translateClientReqOptions.text,
             "targetLanguageCodeList": translateClientReqOptions.to,
             "industryName":translateClientReqOptions.category,
-            "tierType": "AUTO",
-            "glossaryIdList":translateClientReqOptions.options.glossaryIDs,
-            useGlossary:translateClientReqOptions.options.useGlossary
-          }
+            "tierType": "AUTO"
+        }
+
+        return translateClientReqOptions.options ? {...mandatoryOptions, ...{
+            "glossaryIdList":translateClientReqOptions.options.glossaryIDs || [],
+            "translationRequestType": translateClientReqOptions.options.translationRequestType || "STRING",
+            "useBestMatch":translateClientReqOptions.options.useBestMatch || true,
+            "customMTEngineName":translateClientReqOptions.options.useBestMatch ? null : translateClientReqOptions.options.customMTEngineName,
+            }
+        } : mandatoryOptions;
     }
 
+    
+            
     urlParser(str:string, data:IIndexable, protocol?:boolean, layer?:string ){
         const url = str.replace(/\{\{(.*?)\}\}/g, function(match:string, token:string) {
             return data[token];

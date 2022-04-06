@@ -62,7 +62,7 @@ export interface TranslateClientReqOptions {
     to: String[],
     text:String,
     category:String,
-    options:TReqOptions
+    options?:TReqOptions
 }
 export interface MissingTranslateClientReqOptions {
     type:String,
