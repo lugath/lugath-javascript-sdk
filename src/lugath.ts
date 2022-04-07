@@ -65,7 +65,11 @@ export class Lugath {
     }
 
     responseByType(targetEndpoint:string, r:any){
-       return Promise.resolve(r.translationList)
+       if(r.translationList){
+        return Promise.resolve(r.translationList)
+       } else {
+        return Promise.resolve(r)
+       }
     }
 
     isValidRequestData(translateClientReqOptions:TranslateClientReqOptions){
