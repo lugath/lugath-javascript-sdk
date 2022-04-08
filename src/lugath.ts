@@ -1,4 +1,4 @@
-import {HttpClient, Options, UserOptions,TranslateReqOptions,MissingTranslateClientReqOptions, TranslateClientReqOptions, IIndexable} from "./types";
+import {HttpClient, Options, UserOptions, LugathException, TranslateClientReqOptions, IIndexable} from "./types";
 import {Https} from "./utils/https";
 import {Fetch} from "./utils/fetch";
 import { resolve } from "path";
@@ -53,23 +53,27 @@ export class Lugath {
         if(this.isValidRequestData(translateClientReqOptions)){
             
             const res = this.http.dispatch("POST", "/translation-requests", this.checkTranslationReqIsMissingAttribute(translateClientReqOptions))
-            return res.then((r) => this.responseByType("translation-requests", r))
+            return res.then((r) => this.handleResponseByType("translation-requests", r))
         
         } else {
             return Promise.resolve({
+                status:400,
                 type:"Error",
+                code: 'C-26',
                 reason:"Missing Attribute",
-                message:"from, to, text and category attributes can not be blank."
+                messages:[  "from, to, text and category attributes can not be blank." ]
             });
         }
     }
-
-    responseByType(targetEndpoint:string, r:any){
-       if(r.translationList){
-        return Promise.resolve(r.translationList)
-       } else {
-        return Promise.resolve(r)
-       }
+   
+    handleResponseByType(targetEndpoint:string, r:any){
+        if(r.status === 400){
+            return Promise.reject(r)
+        } else if(r.status === 200) {
+            return Promise.resolve(r)
+        } else {
+            return Promise.resolve(r)
+        }
     }
 
     isValidRequestData(translateClientReqOptions:TranslateClientReqOptions){

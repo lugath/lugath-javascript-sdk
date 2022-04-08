@@ -74,7 +74,7 @@ export class Https implements HttpClient {
                     if(json.error && json.error_description){
                         reject(new LugathException(json));
                     }
-                    resolve(json);
+                    resolve({...json, ...{status:res.statusCode}});
                 });
 
             });
