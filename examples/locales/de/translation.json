@@ -1,0 +1,18 @@
+{
+  "ActivityBox.viewAllTitle": "Alle anzeigen",
+  "AuthorBox.contactInformation": "Kontaktinformationen",
+  "Footer.contactInformationTitle": "Unsere Kontaktdaten",
+  "Footer.contactFormTitle": "Kontaktformular",
+  "Footer.adresLabel": "Sprechen Sie mit",
+  "Footer.phoneLabel": "telefon",
+  "Footer.submitButtonLabel": "Absenden",
+  "Footer.NameSurnameLabel": "VORNAME",
+  "Footer.NameSurnameInputPlaceholde": "Name, Vorname",
+  "Footer.NameSurnameWarningMessage": "Zu Gunsten, geben Sie Ihren Vor- und Nachnamen an.",
+  "Footer.emailAdressLabel": "E-MAIL ADRESSE",
+  "Footer.emailWarningMessage": "Bitte geben Sie Ihre E-Mail-Adresse an.",
+  "Footer.emailMissingMessage": "Ihre E-Mail-Adresse ist ungültig.",
+  "Footer.messageLabel": "Ihre Nachricht",
+  "Footer.successMessage": "Vielen Dank, wir haben Ihre Nachricht erhalten.",
+  "Footer.messageMissingMessag": "Bitte hinterlassen Sie keine Nachricht von Urlaub."
+}

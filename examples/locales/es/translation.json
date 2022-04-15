@@ -1,0 +1,18 @@
+{
+  "ActivityBox.viewAllTitle": "Mostrar todo",
+  "AuthorBox.contactInformation": "Información del contacto",
+  "Footer.contactInformationTitle": "Nuestros datos de contacto",
+  "Footer.contactFormTitle": "Kontaktformular",
+  "Footer.adresLabel": "Habla a",
+  "Footer.phoneLabel": "teléfono",
+  "Footer.submitButtonLabel": "Enviar",
+  "Footer.NameSurnameLabel": "NOMBRE",
+  "Footer.NameSurnameInputPlaceholde": "Nombre, primer nombre",
+  "Footer.NameSurnameWarningMessage": "Zu Gunsten, indique su nombre y apellido.",
+  "Footer.emailAdressLabel": "DIRECCIÓN DE CORREO ELECTRÓNICO",
+  "Footer.emailWarningMessage": "Por favor, especifique su dirección de correo electrónico.",
+  "Footer.emailMissingMessage": "Su dirección de correo electrónico no es válida.",
+  "Footer.messageLabel": "Tu mensaje",
+  "Footer.successMessage": "Vielen Dank, hemos recibido tu mensaje.",
+  "Footer.messageMissingMessag": "Por favor, no dejes du mensaje Urlaub."
+}
